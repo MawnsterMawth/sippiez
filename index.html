@@ -9,6 +9,15 @@
         <h1>hello world</h1>
         <button onClick="getIngredients()">get ingredients</button>
         <button onClick="createIngredientList()">print ingredients</button>
+        <form>
+            <label for="sname">Smoothie name:</label>
+            <input type="text" id="sname" name="sname">
+            <label for="sinst">Smoothie inst:</label>
+            <input type="text" id="sinst" name="sinst">
+            <label for="sdesc">Smoothie desc:</label>
+            <input type="text" id="sdesc" name="sdesc">
+        </form>
+        <button onClick="createSmoothie()">add smoothie</button>
         <div id='ingredientList'> </div
     </body>
 </html>
