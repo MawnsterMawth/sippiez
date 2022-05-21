@@ -8,7 +8,18 @@ function getIngredients() {
     http.open("GET", baseUrl + "ingredients")
     http.send()
     http.onreadystatechange = (e) => {
-        this.ingredients = JSON.parse(http.responseText)["ingredients"]
+        if (http.status === 200 && http.readyState === XMLHttpRequest.DONE) {
+            this.ingredients = JSON.parse(http.responseText)["ingredients"]
+            createIngredientList()
+        }
+    }
+}
+
+function getSmoothies() {
+    http.open("GET", baseUrl + "smoothies")
+    http.send()
+    http.onreadystatechange = (e) => {
+        console.log(JSON.parse(http.responseText)["smoothies"])
     }
 }
 
@@ -54,6 +65,7 @@ function createSmoothie() {
             // loop through checkboxs and add ingredients to smoothie if box is checked
             for (let i = 0; i < this.ingredients.length; i++) {
                 let checked = document.getElementById(i).checked
+                // need to create a new request for each ingredient since they are asynchonous
                 if (checked) addIngredient(s_id, this.ingredients[i].ingredient_id, 1, new XMLHttpRequest())
             }
         }
@@ -67,13 +79,5 @@ function addIngredient(s_id, i_id, quantity, req) {
     req.send()
     req.onreadystatechange = (e) => {
         console.log(JSON.parse(req.responseText))
-    }
-}
-
-function getSmoothies() {
-    http.open("GET", baseUrl + "smoothies")
-    http.send()
-    http.onreadystatechange = (e) => {
-        console.log(JSON.parse(http.responseText)["smoothies"])
     }
 }

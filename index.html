@@ -5,10 +5,8 @@
         <title></title>
     </head>
     <script type="text/javascript" src="./requests.js"></script>
-    <body>
-        <h1>hello world</h1>
-        <button onClick="getIngredients()">get ingredients</button>
-        <button onClick="createIngredientList()">print ingredients</button>
+    <body onload="getIngredients()">
+        <h1>Sippiez</h1>
         <form>
             <label for="sname">Smoothie name:</label>
             <input type="text" id="sname" name="sname">
@@ -17,7 +15,7 @@
             <label for="sdesc">Smoothie desc:</label>
             <input type="text" id="sdesc" name="sdesc">
         </form>
+        <div id='ingredientList'></div>
         <button onClick="createSmoothie()">add smoothie</button>
-        <div id='ingredientList'> </div
     </body>
 </html>
