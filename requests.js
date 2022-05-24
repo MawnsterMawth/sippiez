@@ -4,13 +4,13 @@ const baseUrl = 'https://sippiez.herokuapp.com/'
 this.ingredients = null;
 
 // calls a get request to the server to get the all the ingredients
-function getIngredients() {
+function getIngredientsCreate() {
     http.open("GET", baseUrl + "ingredients")
     http.send()
     http.onreadystatechange = (e) => {
         if (http.status === 200 && http.readyState === XMLHttpRequest.DONE) {
             this.ingredients = JSON.parse(http.responseText)["ingredients"]
-            createIngredientList()
+            createSmoothieList()
         }
     }
 }
@@ -23,29 +23,46 @@ function getSmoothies() {
     }
 }
 
-// creates a list of checkable ingredients
-function createIngredientList() {
+// creates a list of checkable ingredients with quantity input
+function createSmoothieList() {
     // create unordered list
-    let list = document.createElement('ul')
+    let ul = document.createElement('ul')
     for (let i = 0; i < this.ingredients.length; i++) {
         // create list item
-        let item = document.createElement('li')
-        // create input for list item
-        let input = document.createElement('input')
-        input.setAttribute('type', 'checkbox')
-        input.setAttribute('id', i)
+        let li = document.createElement('li')
+        // create checkbox for list item
+        let checkbox = document.createElement('input')
+        checkbox.setAttribute('type', 'checkbox')
+        checkbox.setAttribute('id', i)
         // create label for list item
         let label = document.createElement('label')
         label.setAttribute('for', 'checkbox')
         label.innerHTML = this.ingredients[i].i_name
-        // append input and label to list item
-        item.appendChild(input)
-        item.appendChild(label)
+        // create text input for quantity
+        let quantity = document.createElement('input')
+        quantity.setAttribute('type', 'text')
+        quantity.setAttribute('id', "q" + i)
+        // create dropdown for unit type
+        let unit = document.createElement('select')
+        unit.setAttribute('id', "u" + i)
+        let ounce = document.createElement('option')
+        ounce.setAttribute('value', 1)
+        ounce.innerHTML = "Ounces"
+        let cup = document.createElement('option')
+        cup.setAttribute('value', 5.3)
+        cup.innerHTML = "Cups"
+        unit.appendChild(ounce)
+        unit.appendChild(cup)
+        // append checkbox, label and quantity to list item
+        li.appendChild(checkbox)
+        li.appendChild(label)
+        li.appendChild(quantity)
+        li.appendChild(unit)
         // append list item to unordered list
-        list.appendChild(item)
+        ul.appendChild(li)
     }
     // add unordered list to html
-    document.getElementById('ingredientList').appendChild(list)
+    document.getElementById('ingredientList').appendChild(ul)
 }
 
 // adds a smoothie to smoothie relation
@@ -65,8 +82,10 @@ function createSmoothie() {
             // loop through checkboxs and add ingredients to smoothie if box is checked
             for (let i = 0; i < this.ingredients.length; i++) {
                 let checked = document.getElementById(i).checked
+                let quan = document.getElementById("q" + i)
+                let unit = document.getElementById("u" + i)
                 // need to create a new request for each ingredient since they are asynchonous
-                if (checked) addIngredient(s_id, this.ingredients[i].ingredient_id, 1, new XMLHttpRequest())
+                if (checked) addIngredient(s_id, this.ingredients[i].ingredient_id, quan.value * unit.value, new XMLHttpRequest())
             }
         }
     }
@@ -74,10 +93,11 @@ function createSmoothie() {
 
 // adds ingredient to smoothie. should only be called within createSmoothie()
 function addIngredient(s_id, i_id, quantity, req) {
-    console.log(s_id, i_id, quantity)
     req.open("POST", baseUrl + "addIngredient?" + "s_id=" + s_id + "&i_id=" + i_id + "&quantity=" + quantity)
     req.send()
     req.onreadystatechange = (e) => {
-        console.log(JSON.parse(req.responseText))
+        if (http.status === 200 && http.readyState === XMLHttpRequest.DONE) {
+            console.log(JSON.parse(req.responseText))
+        }
     }
 }
