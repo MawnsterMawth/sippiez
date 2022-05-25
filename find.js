@@ -99,6 +99,7 @@ function sortSmoothies() {
 // TODO: need some formatting on this
 function smoothieListFind() {
     let ul = document.createElement('ul')
+    ul.setAttribute('id', 'smoothieList')
     for (let i = 0; i < this.sortedSmoothies.length; i++) {
         let li = document.createElement('li')
 
@@ -117,5 +118,6 @@ function smoothieListFind() {
 
         ul.appendChild(li)
     }
+    if (document.getElementById('smoothieList')) document.getElementById('smoothieList').parentNode.removeChild(document.getElementById('smoothieList'))
     if (document.getElementById('smoothieListFind')) document.getElementById('smoothieListFind').appendChild(ul)
 }
