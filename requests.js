@@ -1,6 +1,8 @@
 const http = new XMLHttpRequest()
 const baseUrl = 'https://sippiez.herokuapp.com/'
 
+this.smoothies = []
+
 // calls a get request to the server to get the all the ingredients
 function getIngredientsCreate() {
     if (!this.ingredients) {
@@ -14,14 +16,6 @@ function getIngredientsCreate() {
         }
     }
 }
-
-// function getSmoothies() {
-//     http.open("GET", baseUrl + "smoothies")
-//     http.send()
-//     http.onreadystatechange = (e) => {
-//         console.log(JSON.parse(http.responseText)["smoothies"])
-//     }
-// }
 
 // creates a list of checkable ingredients with quantity input
 function ingredientList() {
@@ -122,10 +116,15 @@ function addIngredient(s_id, i_id, quantity, req) {
 
 function findSmoothie() {
     this.smoothies = []
+    let ingredientCount = 0
     for (let i = 0; i < this.ingredients.length; i++) {
         let checked = document.getElementById("find" + i).checked
-        if (checked) getSmoothie(this.ingredients[i].i_name, new XMLHttpRequest())
+        if (checked) {
+            ingredientCount++
+            getSmoothie(this.ingredients[i].i_name, new XMLHttpRequest())
+        }
     }
+    trySmoothie(ingredientCount)
 }
 
 function getSmoothie(i_name, req) {
@@ -135,7 +134,63 @@ function getSmoothie(i_name, req) {
     req.onreadystatechange = (e) => {
         if (req.status === 200 && req.readyState === XMLHttpRequest.DONE) {
             this.smoothies.push(JSON.parse(req.responseText).smoothies)
-            console.log(this.smoothies)
         }
     }
+}
+
+function trySmoothie(ingredientCount) {
+    if (this.smoothies.length == ingredientCount) {
+        sortSmoothies()
+    } else {
+        setTimeout(trySmoothie, 300, ingredientCount)
+    }
+}
+
+function sortSmoothies() {
+    let smoothieFrequency = {}
+    this.smoothieInfoMap = {}
+    for (let i = 0; i < this.smoothies.length; i++) {
+        for (let j = 0; j < this.smoothies[i].length; j++) {
+            if (smoothieFrequency[this.smoothies[i][j].s_name]) smoothieFrequency[this.smoothies[i][j].s_name] += 1
+            else smoothieFrequency[this.smoothies[i][j].s_name] = 1
+            this.smoothieInfoMap[this.smoothies[i][j].s_name] = [this.smoothies[i][j].s_description, this.smoothies[i][j].s_instructions]
+        }
+    }
+    let items = Object.keys(smoothieFrequency).map(key => {
+        return [key, smoothieFrequency[key]]
+    })
+    items.sort((first, second) => {
+        return second[1] - first[1]
+    })
+    items.forEach(item => {
+        item.splice(1, 1)
+    })
+    this.sortedSmoothies = [].concat.apply([], items)
+    console.log(this.sortedSmoothies)
+    console.log(this.smoothieInfoMap)
+    smoothieListFind()
+}
+
+// TODO: Create a list on the html file using sortedSmoothies and smoothieInfoMap
+function smoothieListFind() {
+    let ul = document.createElement('ul')
+    for (let i = 0; i < this.sortedSmoothies.length; i++) {
+        let li = document.createElement('li')
+
+        let label_name = document.createElement('label')
+        label_name.innerHTML = this.sortedSmoothies[i]
+
+        let label_description = document.createElement('label')
+        label_description.innerHTML = this.smoothieInfoMap[this.sortedSmoothies[i]][0]
+
+        let label_instructions = document.createElement('label')
+        label_instructions.innerHTML = this.smoothieInfoMap[this.sortedSmoothies[i]][1]
+
+        li.appendChild(label_name)
+        li.appendChild(label_description)
+        li.appendChild(label_instructions)
+
+        ul.appendChild(li)
+    }
+    if (document.getElementById('smoothieListFind')) document.getElementById('smoothieListFind').appendChild(ul)
 }
