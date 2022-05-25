@@ -4,12 +4,9 @@
         <meta charset="utf-8">
         <title>Sippiez</title>
     </head>
-    <script type="text/javascript" src="./requests.js"></script>
-    <body onload="getIngredientsCreate()">
+    <script type="text/javascript" src="./create.js"></script>
+    <body onload='getIngredientsCreate()'>
         <nav>
-            <div class="heading">
-                <h4>Sippiez</h4>
-            </div>
             <ul>
                 <li><a class="active" href="index.html">Home</a></li>
                 <li><a class="active" href="create.html">Create smoothie</a></li>
@@ -18,18 +15,19 @@
             </ul>
         </nav>
         <div class="body-text">
-            <h1>Home</h1>
+            <h1>Create a smoothie</h1>
         </div>
-        <h1>Sippiez</h1>
         <form>
             <label for="sname">Smoothie name:</label>
             <input type="text" id="sname" name="sname">
-            <label for="sinst">Smoothie inst:</label>
+
+            <label for="sinst">Smoothie instructions:</label>
             <input type="text" id="sinst" name="sinst">
-            <label for="sdesc">Smoothie desc:</label>
+
+            <label for="sdesc">Smoothie description:</label>
             <input type="text" id="sdesc" name="sdesc">
         </form>
         <div id='ingredientListCreate'></div>
-        <button onClick="createSmoothie()">add smoothie</button>
+        <button onClick="createSmoothie()">Create Smoothie</button>
     </body>
 </html>

@@ -4,12 +4,9 @@
         <meta charset="utf-8">
         <title>Sippiez</title>
     </head>
-    <script type="text/javascript" src="./requests.js"></script>
-    <body onload="getIngredientsCreate()">
+    <script type="text/javascript" src="./find.js"></script>
+    <body onload="getIngredientsFind()">
         <nav>
-            <div class="heading">
-                <h4>Navigation</h4>
-            </div>
             <ul>
                 <li><a class="active" href="index.html">Home</a></li>
                 <li><a class="active" href="create.html">Create smoothie</a></li>
@@ -18,9 +15,9 @@
             </ul>
         </nav>
         <div class="body-text">
-            <h1>Home</h1>
+            <h1>Find a smoothie</h1>
             <div id='ingredientListFind'></div>
-            <button type="button" onClick="findSmoothie()">test</button>
+            <button type="button" onClick="findSmoothie()">Find smoothies</button>
             <div id='smoothieListFind'></div>
         </div>
     </body>
