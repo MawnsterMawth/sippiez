@@ -171,7 +171,6 @@ function sortSmoothies() {
     smoothieListFind()
 }
 
-// TODO: Create a list on the html file using sortedSmoothies and smoothieInfoMap
 function smoothieListFind() {
     let ul = document.createElement('ul')
     for (let i = 0; i < this.sortedSmoothies.length; i++) {
