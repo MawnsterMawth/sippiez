@@ -100,6 +100,7 @@ function sortSmoothies() {
 }
 
 // TODO: need some formatting on this
+// TODO: include name, desc, inst, total cal, total price, ingredients used
 function smoothieListFind() {
     let ul = document.createElement('ul')
     ul.setAttribute('id', 'smoothieList')
