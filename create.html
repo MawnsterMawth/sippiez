@@ -43,18 +43,21 @@
         </nav>
         <div class="body-text">
             <h1>Create a smoothie</h1>
+            <form>
+                <label for="sname">Smoothie name:</label>
+                <input type="text" id="sname" name="sname">
+
+                <label for="sinst">Instructions (Optional):</label>
+                <input type="text" id="sinst" name="sinst">
+
+                <label for="sdesc">Description (Optional):</label>
+                <input type="text" id="sdesc" name="sdesc">
+
+                <button onClick="createSmoothie()">Create Smoothie</button>
+            </form>
+
+            <div id='ingredientListCreate'></div>
         </div>
-        <form>
-            <label for="sname">Smoothie name:</label>
-            <input type="text" id="sname" name="sname">
 
-            <label for="sinst">Smoothie instructions:</label>
-            <input type="text" id="sinst" name="sinst">
-
-            <label for="sdesc">Smoothie description:</label>
-            <input type="text" id="sdesc" name="sdesc">
-        </form>
-        <div id='ingredientListCreate'></div>
-        <button onClick="createSmoothie()">Create Smoothie</button>
     </body>
 </html>

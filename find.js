@@ -17,28 +17,31 @@ function getIngredientsFind() {
 // creates a list of checkable ingredients with quantity input
 function ingredientList() {
     // create unordered lists for 'create' and 'find'
-    let ul_find = document.createElement('ul')
+    let div = document.createElement('div')
+    div.setAttribute('class', 'container')
     for (let i = 0; i < this.ingredients.length; i++) {
         // create list items for 'creat'e and 'find'
-        let li_find = document.createElement('li')
+        let div_row = document.createElement('div')
+        div_row.setAttribute('class', 'row')
+        div.appendChild(div_row)
 
         // create checkbox for 'find' list item
-        let checkbox_find = document.createElement('input')
-        checkbox_find.setAttribute('type', 'checkbox')
-        checkbox_find.setAttribute('id', "find" + i)
-        // create label for 'find' list item
-        let label_find = document.createElement('label')
-        label_find.setAttribute('for', 'checkbox_find')
-        label_find.innerHTML = this.ingredients[i].i_name
-        // append checkbox and label to 'find' list item
-        li_find.appendChild(checkbox_find)
-        li_find.appendChild(label_find)
-
-        // append list items to unordered list
-        ul_find.appendChild(li_find)
+        let checkbox = document.createElement('input')
+        checkbox.setAttribute('type', 'checkbox')
+        checkbox.setAttribute('id', "find" + i)
+        checkbox.setAttribute('class', 'form-check-input me-1')
+        let div_col1 = document.createElement('div')
+        div_col1.setAttribute('class', 'col')
+        div_col1.appendChild(checkbox)
+        div_row.appendChild(div_col1)
+        // create a label
+        let label = document.createElement('label')
+        label.setAttribute('for', 'checkbox_create')
+        label.innerHTML = this.ingredients[i].i_name
+        div_col1.appendChild(label)
     }
     // add unordered lists to html
-    if (document.getElementById('ingredientListFind')) document.getElementById('ingredientListFind').appendChild(ul_find)
+    if (document.getElementById('ingredientListFind')) document.getElementById('ingredientListFind').appendChild(div)
 }
 
 function findSmoothie() {

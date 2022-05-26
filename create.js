@@ -17,52 +17,43 @@ function getIngredientsCreate() {
 // adds the ingredients to the html
 function ingredientList() {
     // create unordered list
-    let ul = document.createElement('ul')
+    let div = document.getElementById('ingredientListCreate')
+    div.setAttribute('class', 'container')
 
     for (let i = 0; i < this.ingredients.length; i++) {
         // create a list item
-        let li = document.createElement('li')
+        let div_row = document.createElement('div')
+        div_row.setAttribute('class', 'row')
+        div.appendChild(div_row)
 
         // create a checkbox
         let checkbox = document.createElement('input')
         checkbox.setAttribute('type', 'checkbox')
         checkbox.setAttribute('id', "create" + i)
+        checkbox.setAttribute('class', 'form-check-input me-1')
+        let div_col1 = document.createElement('div')
+        div_col1.setAttribute('class', 'col')
+        div_col1.appendChild(checkbox)
+        div_row.appendChild(div_col1)
 
         // create a label
         let label = document.createElement('label')
-        label.setAttribute('for', 'checkbox_create')
+        label.setAttribute('for', 'checkbox')
         label.innerHTML = this.ingredients[i].i_name
+        div_col1.appendChild(label)
 
         // create a text input for quantity
         let quantity = document.createElement('input')
         quantity.setAttribute('type', 'text')
         quantity.setAttribute('id', "quantity" + i)
-
-        // create a select input for unit
-        let unit = document.createElement('select')
-        unit.setAttribute('id', "unit" + i)
-        // add ounce as a selectable unit
-        let ounce = document.createElement('option')
-        ounce.setAttribute('value', 1)
-        ounce.innerHTML = "Ounces"
-        // add cup as a selectable unit
-        let cup = document.createElement('option')
-        cup.setAttribute('value', 5.3)
-        cup.innerHTML = "Cups"
-        unit.appendChild(ounce)
-        unit.appendChild(cup)
-
-        // append all elements to the list item
-        li.appendChild(checkbox)
-        li.appendChild(label)
-        li.appendChild(quantity)
-        li.appendChild(unit)
-
-        // append list item to the unordered list
-        ul.appendChild(li)
+        let div_col3 = document.createElement('div')
+        div_col3.setAttribute('class', 'col')
+        div_col3.appendChild(quantity)
+        div_row.appendChild(div_col3)
+        let unit_label = document.createElement('label')
+        unit_label.innerHTML = "ounces"
+        div_col3.appendChild(unit_label)
     }
-    // append the unordered list to the specified div
-    if (document.getElementById('ingredientListCreate')) document.getElementById('ingredientListCreate').appendChild(ul)
 }
 
 // adds a smoothie to smoothie relation
@@ -83,9 +74,8 @@ function createSmoothie() {
             for (let i = 0; i < this.ingredients.length; i++) {
                 let checked = document.getElementById("create" + i).checked
                 let quantity = document.getElementById("quantity" + i)
-                let unit = document.getElementById("unit" + i)
                 // need to create a new request for each ingredient since they are asynchonous
-                if (checked) addIngredient(s_id, this.ingredients[i].ingredient_id, quantity.value * unit.value, new XMLHttpRequest())
+                if (checked) addIngredient(s_id, this.ingredients[i].ingredient_id, quantity.value, new XMLHttpRequest())
             }
         }
     }
