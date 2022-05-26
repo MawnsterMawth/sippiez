@@ -80,13 +80,13 @@ function trySmoothie(ingredientCount) {
 function sortSmoothies() {
     // find the frequency of chosen ingredients in each smoothie
     let smoothieFrequency = {}
-    this.smoothieInfoMap = {}
+    this.smoothieDescInstMap = {}
     for (let i = 0; i < this.smoothies.length; i++) {
         for (let j = 0; j < this.smoothies[i].length; j++) {
             if (smoothieFrequency[this.smoothies[i][j].s_name]) smoothieFrequency[this.smoothies[i][j].s_name] += 1
             else smoothieFrequency[this.smoothies[i][j].s_name] = 1
             // map the smoothie name to its description and instructions
-            this.smoothieInfoMap[this.smoothies[i][j].s_name] = [this.smoothies[i][j].s_description, this.smoothies[i][j].s_instructions]
+            this.smoothieDescInstMap[this.smoothies[i][j].s_name] = [this.smoothies[i][j].s_description, this.smoothies[i][j].s_instructions]
         }
     }
     // sort the smoothies by frequency
@@ -96,32 +96,122 @@ function sortSmoothies() {
     // merge the sorted smoothies to one list
     this.sortedSmoothies = [].concat.apply([], items)
     // create the list of smoothies and put it on the html
-    smoothieListFind()
+    //smoothieListFind()
+    retrieveSmoothieInfo()
 }
 
-// TODO: need some formatting on this
-// TODO: include name, desc, inst, total cal, total price, ingredients used
-function smoothieListFind() {
-    let ul = document.createElement('ul')
-    ul.setAttribute('id', 'smoothieList')
+function retrieveSmoothieInfo() {
+    this.smoothieInfoMap = {}
+    this.smoothieInfoCount = 0
+    this.smoothieIngredientsMap = {}
+    this.smoothieIngredientCount = 0
     for (let i = 0; i < this.sortedSmoothies.length; i++) {
-        let li = document.createElement('li')
-
-        let label_name = document.createElement('label')
-        label_name.innerHTML = this.sortedSmoothies[i]
-
-        let label_description = document.createElement('label')
-        label_description.innerHTML = this.smoothieInfoMap[this.sortedSmoothies[i]][0]
-
-        let label_instructions = document.createElement('label')
-        label_instructions.innerHTML = this.smoothieInfoMap[this.sortedSmoothies[i]][1]
-
-        li.appendChild(label_name)
-        li.appendChild(label_description)
-        li.appendChild(label_instructions)
-
-        ul.appendChild(li)
+        getSmoothieInfo(this.sortedSmoothies[i], new XMLHttpRequest())
+        getSmoothieIngredients(this.sortedSmoothies[i], new XMLHttpRequest())
     }
-    if (document.getElementById('smoothieList')) document.getElementById('smoothieList').parentNode.removeChild(document.getElementById('smoothieList'))
-    if (document.getElementById('smoothieListFind')) document.getElementById('smoothieListFind').appendChild(ul)
+    tryInfo()
+}
+
+function getSmoothieInfo(s_name, req) {
+    req.open("GET", baseUrl + "getSmoothieInfo")
+    req.setRequestHeader("sname", s_name)
+    req.send()
+    req.onreadystatechange = (e) => {
+        if (req.status === 200 && req.readyState === XMLHttpRequest.DONE) {
+            this.smoothieInfoMap[s_name] = JSON.parse(req.responseText).info
+            this.smoothieInfoCount++
+        }
+    }
+}
+
+function getSmoothieIngredients(s_name, req) {
+    req.open("GET", baseUrl + "getSmoothieIngredients")
+    req.setRequestHeader("sname", s_name)
+    req.send()
+    req.onreadystatechange = (e) => {
+        if (req.status === 200 && req.readyState === XMLHttpRequest.DONE) {
+            this.smoothieIngredientsMap[s_name] = JSON.parse(req.responseText).ingredients
+            this.smoothieIngredientCount++
+        }
+    }
+}
+
+function tryInfo() {
+    if (this.smoothieInfoCount == this.sortedSmoothies.length && this.smoothieIngredientCount == this.sortedSmoothies.length) {
+        smoothieListFind()
+    } else {
+        setTimeout(tryInfo, 300)
+    }
+}
+
+// TODO: include ingredients used
+function smoothieListFind() {
+    let accordion = document.getElementById('smoothieListFind')
+    for (let i = 0; i < this.sortedSmoothies.length; i++) {
+        let div = document.createElement('div')
+        div.setAttribute('class', 'accordion-item')
+        accordion.appendChild(div)
+
+        let h2 = document.createElement('h2')
+        h2.setAttribute('class', 'accordian-header')
+        h2.setAttribute('id', 'heading' + i)
+        div.appendChild(h2)
+
+        let button = document.createElement('button')
+        button.setAttribute('class', 'accordian-button')
+        button.setAttribute('type', 'button')
+        button.setAttribute('data-bs-toggle', 'collapse')
+        button.setAttribute('data-bs-target','#collapse' + i)
+        button.setAttribute('aria-expanded', 'false')
+        button.setAttribute('aria-controls', 'collapse' + i)
+        button.innerHTML = this.sortedSmoothies[i]
+        h2.appendChild(button)
+
+        let inner_div = document.createElement('div')
+        inner_div.setAttribute('class', 'accordion-collapse collapse show')
+        inner_div.setAttribute('id', 'collapse' + i)
+        inner_div.setAttribute('aria-labelledby', 'heading' + i)
+        inner_div.setAttribute('data-bs-parent', 'smoothieListFind')
+        div.appendChild(inner_div)
+
+        let inner_div_body = document.createElement('div')
+        inner_div_body.setAttribute('class', 'accordion-body')
+        inner_div.appendChild(inner_div_body)
+
+        let container = document.createElement('div')
+        container.setAttribute('class', 'container')
+        inner_div_body.appendChild(container)
+
+        let description = document.createElement('div')
+        description.setAttribute('class', 'row')
+        description.innerHTML = "Description: " + this.smoothieDescInstMap[this.sortedSmoothies[i]][0]
+        container.appendChild(description)
+
+        let instructions = document.createElement('div')
+        instructions.setAttribute('class', 'row')
+        instructions.innerHTML = "Instructions: " + this.smoothieDescInstMap[this.sortedSmoothies[i]][1]
+        container.appendChild(instructions)
+
+        let calories = document.createElement('div')
+        calories.setAttribute('class', 'row')
+        calories.innerHTML = "Total Calories: " + this.smoothieInfoMap[this.sortedSmoothies[i]][0]['total_cal']
+        container.appendChild(calories)
+
+        let price = document.createElement('div')
+        price.setAttribute('class', 'row')
+        price.innerHTML = "Total Price: " + this.smoothieInfoMap[this.sortedSmoothies[i]][0]['total_price']
+        container.appendChild(price)
+
+        let ingredients = document.createElement('div')
+        ingredients.setAttribute('class', 'row')
+        let i_string = "Ingredients Used: "
+        for (let j = 0; j < this.smoothieIngredientsMap[this.sortedSmoothies[i]].length; j++) {
+            i_string += this.smoothieIngredientsMap[this.sortedSmoothies[i]][j].i_name
+            if (j != this.smoothieIngredientsMap[this.sortedSmoothies[i]].length - 1) i_string += ", "
+        }
+        ingredients.innerHTML = i_string
+        container.appendChild(ingredients)
+
+    }
+
 }
