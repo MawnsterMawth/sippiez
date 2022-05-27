@@ -72,6 +72,7 @@ function createSmoothie() {
             let s_id = JSON.parse(http.responseText)['smoothieId']
             // loop through checkboxs and add ingredients to smoothie if box is checked
             for (let i = 0; i < this.ingredients.length; i++) {
+                console.log("f")
                 let checked = document.getElementById("create" + i).checked
                 let quantity = document.getElementById("quantity" + i)
                 // need to create a new request for each ingredient since they are asynchonous
