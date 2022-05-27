@@ -144,12 +144,21 @@ function tryInfo() {
     }
 }
 
-// TODO: include ingredients used
+function removePrevious(accordion) {
+    let i = 0
+    while (document.getElementById('accordion-item' + i)) {
+        document.getElementById('accordion-item' + i).parentNode.removeChild(document.getElementById('accordion-item' + i))
+        i++
+    }
+}
+
 function smoothieListFind() {
     let accordion = document.getElementById('smoothieListFind')
+    removePrevious(accordion)
     for (let i = 0; i < this.sortedSmoothies.length; i++) {
         let div = document.createElement('div')
         div.setAttribute('class', 'accordion-item')
+        div.setAttribute('id', 'accordion-item' + i)
         accordion.appendChild(div)
 
         let h2 = document.createElement('h2')
@@ -168,7 +177,7 @@ function smoothieListFind() {
         h2.appendChild(button)
 
         let inner_div = document.createElement('div')
-        inner_div.setAttribute('class', 'accordion-collapse collapse show')
+        inner_div.setAttribute('class', 'accordion-collapse collapse')
         inner_div.setAttribute('id', 'collapse' + i)
         inner_div.setAttribute('aria-labelledby', 'heading' + i)
         inner_div.setAttribute('data-bs-parent', 'smoothieListFind')
