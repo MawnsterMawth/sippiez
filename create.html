@@ -34,6 +34,7 @@
                 <span class="input-group-text" id="sdescdescriptor">Smoothie Description</span>
                 <textarea type="text" id="sdesc" class="form-control" placeholder="(Optional) Enter a description of your smoothie" aria-label="Smoothie Desc" aria-describedby="sdescdescriptor"></textarea>
             </div>
+            <div class="alert alert-danger" id="error" style='visibility: hidden;'></div>
             <div class="container">
                 <div class="row">
                     <div class='col' id='col0'> </div>
@@ -42,7 +43,7 @@
                 </div>
             </div>
             <div style="padding-top: 10px;">
-                <button onClick="createSmoothie()" class="btn btn-primary btn-lg" style="display: block; margin: 0 auto;">Create Smoothie</button>
+                <button onClick="checkRequirements()" class="btn btn-primary btn-lg" style="display: block; margin: 0 auto;">Create Smoothie</button>
             </div>
         </div>
     </body>

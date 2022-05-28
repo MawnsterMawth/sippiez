@@ -63,6 +63,39 @@ function ingredientList() {
     }
 }
 
+function checkRequirements() {
+    var error = document.getElementById("error")
+    error.setAttribute('class', 'alert alert-danger')
+    error.style.color = "red"
+    if (!document.getElementById('sname').value) {
+        error.style = 'visibility: show;'
+        error.textContent = "Please enter a name for the smoothie."
+        return
+    }
+    let guard = false
+    for (let i = 0; i < this.ingredients.length; i++) {
+        let checked = document.getElementById("create" + i).checked
+        let quantity = document.getElementById("quantity" + i)
+        if (checked) guard = checked
+        if (checked && !quantity.value) {
+            error.style = 'visibility: show;'
+            error.textContent = "Please enter a quantity for the chosen ingredients."
+            return
+        }
+        if (checked && quantity.value < 1) {
+            error.style = 'visibility: show;'
+            error.textContent = "Quantity must be a number greater than 0."
+            return
+        }
+    }
+    if (!guard) {
+        error.style = 'visibility: show;'
+        error.textContent = "Please choose ingredients for your smoothie."
+        return
+    }
+    createSmoothie()
+}
+
 // adds a smoothie to smoothie relation
 function createSmoothie() {
     // TODO: if name is null, don't send the post request and show some kind of error
@@ -79,12 +112,16 @@ function createSmoothie() {
             let s_id = JSON.parse(http.responseText)['smoothieId']
             // loop through checkboxs and add ingredients to smoothie if box is checked
             for (let i = 0; i < this.ingredients.length; i++) {
-                console.log("f")
                 let checked = document.getElementById("create" + i).checked
                 let quantity = document.getElementById("quantity" + i)
                 // need to create a new request for each ingredient since they are asynchonous
                 if (checked) addIngredient(s_id, this.ingredients[i].ingredient_id, quantity.value, new XMLHttpRequest())
             }
+            var error = document.getElementById("error")
+            error.setAttribute('class', 'alert alert-primary')
+            error.style = 'visibility: show;'
+            error.style.color = "black"
+            error.textContent = "Smoothie successfully created."
         }
     }
 }
