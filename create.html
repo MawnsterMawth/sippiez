@@ -22,20 +22,28 @@
         </nav>
         <div class="body-text">
             <h1>Create a smoothie</h1>
-            <form>
-                <label for="sname">Smoothie name:</label>
-                <input type="text" id="sname" name="sname">
-
-                <label for="sinst">Instructions (Optional):</label>
-                <input type="text" id="sinst" name="sinst">
-
-                <label for="sdesc">Description (Optional):</label>
-                <input type="text" id="sdesc" name="sdesc">
-
-
-            </form>
-            <button onClick="createSmoothie()">Create Smoothie</button>
-            <div id='ingredientListCreate'></div>
+            <div class="input-group mb-1 sm-1">
+                <span class="input-group-text" id="snamedescriptor">Smoothie Name</span>
+                <input type="text" id="sname" class="form-control" placeholder="Enter a name for your smoothie" aria-label="Smoothie Name" aria-describedby="snamedescriptor">
+            </div>
+            <div class="input-group mb-1 sm-2">
+                <span class="input-group-text" id="sinstdescriptor">Smoothie Instructions</span>
+                <textarea type="text" id="sinst" class="form-control" placeholder="(Optional) Enter instructions for your smoothie" aria-label="Smoothie Inst" aria-describedby="sinstdescriptor"></textarea>
+            </div>
+            <div class="input-group mb-1 sm-2">
+                <span class="input-group-text" id="sdescdescriptor">Smoothie Description</span>
+                <textarea type="text" id="sdesc" class="form-control" placeholder="(Optional) Enter a description of your smoothie" aria-label="Smoothie Desc" aria-describedby="sdescdescriptor"></textarea>
+            </div>
+            <div id='ingredientListCreate' class="container">
+                <div class="row">
+                    <div class='col' id='col0'> </div>
+                    <div class='col' id='col1'> </div>
+                    <div class='col' id='col2'> </div>
+                </div>
+            </div>
+            <div style="padding-top: 10px;">
+                <button onClick="createSmoothie()" class="btn btn-primary btn-lg" style="display: block; margin: 0 auto;">Create Smoothie</button>
+            </div>
         </div>
     </body>
 
