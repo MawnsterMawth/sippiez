@@ -17,37 +17,39 @@ function getIngredientsFind() {
 // creates a list of checkable ingredients with quantity input
 function ingredientList() {
     // create unordered lists for 'create' and 'find'
-    let div = document.createElement('div')
-    div.setAttribute('class', 'container')
     for (let i = 0; i < this.ingredients.length; i++) {
-        // create list items for 'creat'e and 'find'
-        let div_row = document.createElement('div')
-        div_row.setAttribute('class', 'row')
-        div.appendChild(div_row)
+        for (let j = 0; j < 3 && i < this.ingredients.length; j++, i++) {
+            console.log(i)
+            let col = document.getElementById('col' + j)
+            // create list items for 'creat'e and 'find'
+            let div_row = document.createElement('div')
+            div_row.setAttribute('class', 'row')
+            col.appendChild(div_row)
 
-        // create checkbox for 'find' list item
-        let checkbox = document.createElement('input')
-        checkbox.setAttribute('type', 'checkbox')
-        checkbox.setAttribute('id', "find" + i)
-        checkbox.setAttribute('class', 'form-check-input me-1')
-        let div_col1 = document.createElement('div')
-        div_col1.setAttribute('class', 'col')
-        div_col1.appendChild(checkbox)
-        div_row.appendChild(div_col1)
-        // create a label
-        let label = document.createElement('label')
-        label.setAttribute('for', 'checkbox_create')
-        label.innerHTML = this.ingredients[i].i_name
-        div_col1.appendChild(label)
+            // create checkbox for 'find' list item
+            let checkbox = document.createElement('input')
+            checkbox.setAttribute('type', 'checkbox')
+            checkbox.setAttribute('id', "find" + i)
+            checkbox.setAttribute('class', 'form-check-input me-1')
+            let div_col1 = document.createElement('div')
+            div_col1.setAttribute('class', 'col')
+            div_col1.appendChild(checkbox)
+            div_row.appendChild(div_col1)
+            // create a label
+            let label = document.createElement('label')
+            label.setAttribute('for', 'checkbox_create')
+            label.innerHTML = this.ingredients[i].i_name
+            div_col1.appendChild(label)
+        }
+        i--
     }
-    // add unordered lists to html
-    if (document.getElementById('ingredientListFind')) document.getElementById('ingredientListFind').appendChild(div)
 }
 
 function findSmoothie() {
     this.smoothies = []
     let ingredientCount = 0
     for (let i = 0; i < this.ingredients.length; i++) {
+        console.log(document.getElementById("find" + i))
         let checked = document.getElementById("find" + i).checked
         if (checked) {
             ingredientCount++

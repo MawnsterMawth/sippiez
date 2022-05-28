@@ -16,15 +16,9 @@ function getIngredientsCreate() {
 
 // adds the ingredients to the html
 function ingredientList() {
-    // create unordered list
-    let div = document.getElementById('ingredientListCreate')
-    div.setAttribute('class', 'container')
-
-
     for (let i = 0; i < this.ingredients.length; i++) {
-        for (let j = 0; j < 3; j++) {
+        for (let j = 0; j < 3 && i < this.ingredients.length; j++, i++) {
             let col = document.getElementById('col' + j)
-            console.log('col' + j)
             // create a list item
             let div_row = document.createElement('div')
             div_row.setAttribute('class', 'row')
@@ -64,8 +58,8 @@ function ingredientList() {
             div_col2.setAttribute('class', 'col col-sm-5')
             div_col2.appendChild(quantity)
             div_row.appendChild(div_col2)
-            i++
         }
+        i--
     }
 }
 
