@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="./styles.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.3/underscore-umd-min.js"></script>
     </head>
 
     <body style="background-color:#beffc7;" onload='getSmoothies()'>
@@ -23,6 +24,79 @@
         </nav>
         <div class="body-text">
             <h1>All smoothies</h1>
+            <div class="container">
+                <div class='row'>
+                    <div class="col">
+                        <p>Sort by...</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type='radio' name="sort" id='priceLowToHigh'>
+                            <label class="form-check-label" for="priceLowToHigh">Sort by price (Low to High)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type='radio' name="sort" id='priceHighToLow'>
+                            <label class="form-check-label" for="priceHighToLow">Sort by price (High to Low)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type='radio' name="sort" id='caloriesLowToHigh'>
+                            <label class="form-check-label" for="caloriesLowToHigh">Sort by calories (Low to High)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type='radio' name="sort" id='caloriesHighToLow'>
+                            <label class="form-check-label" for="caloriesHighToLow">Sort by calories (High to Low)</label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <p>Uses ingredients of type:</p>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="FRUIT" id='fruits'>
+                            <label class='form-check-label'for="fruits">Fruit</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="VEGETABLE" id='vegetables'>
+                            <label class='form-check-label'for="vegetables">Vegetable</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="NUT" id='nuts'>
+                            <label class='form-check-label'for="nuts">Nut</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="DAIRY" id='dairy'>
+                            <label class='form-check-label'for="dairy">Dairy</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="SEEDS" id='seeds'>
+                            <label class='form-check-label'for="seeds">Seed</label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <p>Doesn't use ingredients of type: </p>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="FRUIT" id='nofruits'>
+                            <label class='form-check-label'for="nofruits">Fruit</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="VEGETABLE" id='novegetables'>
+                            <label class='form-check-label'for="novegetables">Vegetable</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="NUT" id='nonuts'>
+                            <label class='form-check-label'for="nonuts">Nut</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="DAIRY" id='nodairy'>
+                            <label class='form-check-label'for="nodairy">Dairy</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="SEEDS" id='noseeds'>
+                            <label class='form-check-label'for="noseeds">Seed</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-danger" id="error" style='visibility: hidden;'></div>
+            <div style="padding-top: 10px;">
+                <button onClick="parseFilters()" class="btn btn-primary btn-lg" style="display: block; margin: 0 auto;">Apply filters</button>
+            </div>
             <div class='accordion' id='allSmoothies'></div>
         </div>
     </body>

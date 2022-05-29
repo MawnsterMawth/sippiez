@@ -15,11 +15,13 @@ function getSmoothies() {
 }
 
 function retrieveSmoothieIngredients() {
+    this.smoothieNameMap = {}
     this.smoothieInfoMap = {}
     this.smoothieInfoCount = 0
     this.smoothieIngredientsMap = {}
     this.smoothieIngredientCount = 0
     for (let i = 0; i < this.smoothies.length; i++) {
+        this.smoothieNameMap[this.smoothies[i].s_name] = this.smoothies[i]
         getSmoothieInfo(this.smoothies[i].s_name, new XMLHttpRequest())
         getSmoothieIngredients(this.smoothies[i].s_name, new XMLHttpRequest())
     }
@@ -134,7 +136,110 @@ function smoothieList() {
         }
         ingredients.innerHTML = i_string
         container.appendChild(ingredients)
-
     }
+}
 
+function parseFilters() {
+    let error = document.getElementById('error')
+    error.style = 'visibility: hidden;'
+
+    let fruit = document.getElementById('fruits')
+    let vegetable = document.getElementById('vegetables')
+    let nut = document.getElementById('nuts')
+    let dairy = document.getElementById('dairy')
+    let seed = document.getElementById('seeds')
+
+    let uses = [fruit, vegetable, nut, dairy, seed]
+
+    let nofruit = document.getElementById('nofruits')
+    let novegetable = document.getElementById('novegetables')
+    let nonut = document.getElementById('nonuts')
+    let nodairy = document.getElementById('nodairy')
+    let noseed = document.getElementById('noseeds')
+
+    let nouses = [nofruit, novegetable, nonut, nodairy, noseed]
+
+    if ((fruit.checked && nofruit.checked) ||
+        (vegetable.checked && novegetable.checked) ||
+        (nut.checked && nonut.checked) ||
+        (dairy.checked && nodairy.checked) ||
+        (seed.checked && noseed.checked)) {
+            error.setAttribute('class', 'alert alert-danger')
+            error.style.color = "red"
+            error.style = 'visibility: show;'
+            error.textContent = "Can't select the same type in 'Uses ingredient of type' and 'Doesn't use ingredients of type'."
+            return
+    }
+    this.uses = []
+    this.usesCount = 0
+    for (let i = 0; i < uses.length; i++) {
+        if (uses[i].checked) {
+            this.usesCount++
+            getUses(uses[i].value, new XMLHttpRequest())
+        }
+    }
+    this.nouses = []
+    this.nousesCount = 0
+    for (let i = 0; i < nouses.length; i++) {
+        if (nouses[i].checked) {
+            this.nousesCount++
+            getNouses(nouses[i].value, new XMLHttpRequest())
+        }
+    }
+    tryJoin()
+}
+
+function tryJoin() {
+    if (this.uses.length >= this.usesCount && this.nouses.length >= this.nousesCount) {
+        joinLists()
+    } else {
+        setTimeout(tryJoin, 300)
+    }
+}
+
+function joinLists() {
+    this.uses = [].concat.apply([], this.uses)
+    this.uses.forEach((item, i) => {
+        this.uses[i] = item.s_name
+    });
+    this.uses = [... new Set(this.uses)]
+    this.nouses.forEach((list, i) => {
+        list.forEach((object, j) => {
+            this.nouses[i][j] = object.s_name
+        });
+    });
+    if (this.nouses.length > 0) this.nouses = this.nouses.reduce((a, b) => a.filter(c => b.includes(c)))
+    let combined = []
+    if (this.uses.length > 0 && this.nouses.length > 0) {
+        combined = [this.uses, this.nouses].reduce((a, b) => a.filter(c => b.includes(c)))
+    } else if (this.uses.length > 0) {
+        combined = this.uses
+    } else {
+        combined = this.nouses
+    }
+    this.smoothies = []
+    combined.forEach((item, i) => {
+        this.smoothies.push(this.smoothieNameMap[item])
+    });
+    smoothieList()
+}
+
+function getUses(i_type, req) {
+    req.open("GET", baseUrl + "getType?type=" + i_type)
+    req.send()
+    req.onreadystatechange = (e) => {
+        if (http.status === 200 && http.readyState === XMLHttpRequest.DONE) {
+            this.uses.push(JSON.parse(req.responseText)['smoothies'])
+        }
+    }
+}
+
+function getNouses(i_type, req) {
+    req.open("GET", baseUrl + "getNotType?type=" + i_type)
+    req.send()
+    req.onreadystatechange = (e) => {
+        if (http.status === 200 && http.readyState === XMLHttpRequest.DONE) {
+            this.nouses.push(JSON.parse(req.responseText)['smoothies'])
+        }
+    }
 }
