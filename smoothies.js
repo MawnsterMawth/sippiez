@@ -170,6 +170,8 @@ function parseFilters() {
             error.textContent = "Can't select the same type in 'Uses ingredient of type' and 'Doesn't use ingredients of type'."
             return
     }
+    document.getElementById('loading').style = 'visibility: show;'
+    document.getElementById('allSmoothies').style = 'visibility: hidden;'
     this.uses = []
     this.usesCount = 0
     for (let i = 0; i < uses.length; i++) {
@@ -198,37 +200,80 @@ function tryJoin() {
 }
 
 function joinLists() {
+    // do union on uses
     this.uses = [].concat.apply([], this.uses)
     this.uses.forEach((item, i) => {
         this.uses[i] = item.s_name
     });
     this.uses = [... new Set(this.uses)]
+    // do intersection on nouses
     this.nouses.forEach((list, i) => {
         list.forEach((object, j) => {
             this.nouses[i][j] = object.s_name
         });
     });
     if (this.nouses.length > 0) this.nouses = this.nouses.reduce((a, b) => a.filter(c => b.includes(c)))
-    let combined = []
+    // do intersection on uses and nouses
+    this.combined = []
     if (this.uses.length > 0 && this.nouses.length > 0) {
-        combined = [this.uses, this.nouses].reduce((a, b) => a.filter(c => b.includes(c)))
+        this.combined = [this.uses, this.nouses].reduce((a, b) => a.filter(c => b.includes(c)))
     } else if (this.uses.length > 0) {
-        combined = this.uses
+        this.combined = this.uses
     } else {
-        combined = this.nouses
+        this.combined = this.nouses
     }
-    this.smoothies = []
-    combined.forEach((item, i) => {
-        this.smoothies.push(this.smoothieNameMap[item])
-    });
-    smoothieList()
+    let guard = false
+    if (document.getElementById('priceLowToHigh').checked) {
+        console.log('in');
+        getSorted('sortPriceAsc')
+        guard = true
+    } else if (document.getElementById('priceHighToLow').checked) {
+        getSorted('sortPriceDesc')
+        guard = true
+    } else if (document.getElementById('caloriesLowToHigh').checked) {
+        getSorted('sortCalAsc')
+        guard = true
+    } else if (document.getElementById('caloriesHighToLow').checked) {
+        getSorted('sortCalDesc')
+        guard = true
+    }
+    if (guard) {
+        trySort()
+    } else {
+        this.smoothies = []
+        combined.forEach((item, i) => {
+            this.smoothies.push(this.smoothieNameMap[item])
+        });
+        document.getElementById('loading').style = 'visibility: hidden;'
+        document.getElementById('allSmoothies').style = 'visibility: show;'
+        smoothieList()
+    }
+}
+
+function trySort() {
+    if (this.sorted) {
+        this.sorted.forEach((item, i) => {
+            this.sorted[i] = item.s_name
+        });
+        this.sorted = this.sorted.filter((x) => this.combined.includes(x))
+        this.smoothies = []
+        this.sorted.forEach((item, i) => {
+            this.smoothies.push(this.smoothieNameMap[item])
+        });
+        document.getElementById('loading').style = 'visibility: hidden;'
+        document.getElementById('allSmoothies').style = 'visibility: show;'
+        smoothieList()
+        return
+    } else {
+        setTimeout(trySort, 300)
+    }
 }
 
 function getUses(i_type, req) {
     req.open("GET", baseUrl + "getType?type=" + i_type)
     req.send()
     req.onreadystatechange = (e) => {
-        if (http.status === 200 && http.readyState === XMLHttpRequest.DONE) {
+        if (req.status === 200 && req.readyState === XMLHttpRequest.DONE) {
             this.uses.push(JSON.parse(req.responseText)['smoothies'])
         }
     }
@@ -238,8 +283,18 @@ function getNouses(i_type, req) {
     req.open("GET", baseUrl + "getNotType?type=" + i_type)
     req.send()
     req.onreadystatechange = (e) => {
-        if (http.status === 200 && http.readyState === XMLHttpRequest.DONE) {
+        if (req.status === 200 && req.readyState === XMLHttpRequest.DONE) {
             this.nouses.push(JSON.parse(req.responseText)['smoothies'])
+        }
+    }
+}
+
+function getSorted(url_addon) {
+    http.open("GET", baseUrl + url_addon)
+    http.send()
+    http.onreadystatechange = (e) => {
+        if (http.status === 200 && http.readyState === XMLHttpRequest.DONE) {
+            this.sorted = JSON.parse(http.responseText)['smoothies']
         }
     }
 }

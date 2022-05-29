@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="./styles.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.3/underscore-umd-min.js"></script>
     </head>
 
     <body style="background-color:#beffc7;" onload='getSmoothies()'>
@@ -24,6 +23,7 @@
         </nav>
         <div class="body-text">
             <h1>All smoothies</h1>
+            <p>Note: If there are no results after pressing apply filters, try pressing it again.</p>
             <div class="container">
                 <div class='row'>
                     <div class="col">
@@ -96,6 +96,9 @@
             <div class="alert alert-danger" id="error" style='visibility: hidden;'></div>
             <div style="padding-top: 10px;">
                 <button onClick="parseFilters()" class="btn btn-primary btn-lg" style="display: block; margin: 0 auto;">Apply filters</button>
+            </div>
+            <div class="spinner-border" role="status" id='loading' style="visibility: hidden;">
+              <span class="visually-hidden" style="display: block; margin: 0 auto;">Loading...</span>
             </div>
             <div class='accordion' id='allSmoothies'></div>
         </div>
