@@ -81,7 +81,7 @@ function smoothieList() {
         div.appendChild(h2)
 
         let button = document.createElement('button')
-        button.setAttribute('class', 'accordian-button')
+        button.setAttribute('class', 'accordion-button')
         button.setAttribute('type', 'button')
         button.setAttribute('data-bs-toggle', 'collapse')
         button.setAttribute('data-bs-target','#collapse' + i)
