@@ -188,7 +188,28 @@ function parseFilters() {
             getNouses(nouses[i].value, new XMLHttpRequest())
         }
     }
-    tryJoin()
+    if (this.usesCount == 0 && this.nousesCount == 0) {
+        let guard = false
+        if (document.getElementById('priceLowToHigh').checked) {
+            console.log('in');
+            getSorted('sortPriceAsc')
+            guard = true
+        } else if (document.getElementById('priceHighToLow').checked) {
+            getSorted('sortPriceDesc')
+            guard = true
+        } else if (document.getElementById('caloriesLowToHigh').checked) {
+            getSorted('sortCalAsc')
+            guard = true
+        } else if (document.getElementById('caloriesHighToLow').checked) {
+            getSorted('sortCalDesc')
+            guard = true
+        }
+        if (guard) {
+            trySort()
+        }
+    } else {
+        tryJoin()
+    }
 }
 
 function tryJoin() {
@@ -255,11 +276,19 @@ function trySort() {
         this.sorted.forEach((item, i) => {
             this.sorted[i] = item.s_name
         });
-        this.sorted = this.sorted.filter((x) => this.combined.includes(x))
+        if (this.combined) this.sorted = this.sorted.filter((x) => this.combined.includes(x))
+        else {
+            let temp = []
+            this.smoothies.forEach((item, i) => {
+                temp[i] = item.s_name
+            });
+            this.sorted = this.sorted.filter((x) => temp.includes(x))
+        }
         this.smoothies = []
         this.sorted.forEach((item, i) => {
             this.smoothies.push(this.smoothieNameMap[item])
         });
+        this.sorted = null
         document.getElementById('loading').style = 'visibility: hidden;'
         document.getElementById('allSmoothies').style = 'visibility: show;'
         smoothieList()
