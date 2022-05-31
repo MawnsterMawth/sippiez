@@ -188,6 +188,7 @@ function parseFilters() {
             getNouses(nouses[i].value, new XMLHttpRequest())
         }
     }
+    this.combined = null
     if (this.usesCount == 0 && this.nousesCount == 0) {
         let guard = false
         if (document.getElementById('priceLowToHigh').checked) {
@@ -262,7 +263,7 @@ function joinLists() {
         trySort()
     } else {
         this.smoothies = []
-        combined.forEach((item, i) => {
+        this.combined.forEach((item, i) => {
             this.smoothies.push(this.smoothieNameMap[item])
         });
         document.getElementById('loading').style = 'visibility: hidden;'
@@ -277,13 +278,6 @@ function trySort() {
             this.sorted[i] = item.s_name
         });
         if (this.combined) this.sorted = this.sorted.filter((x) => this.combined.includes(x))
-        else {
-            let temp = []
-            this.smoothies.forEach((item, i) => {
-                temp[i] = item.s_name
-            });
-            this.sorted = this.sorted.filter((x) => temp.includes(x))
-        }
         this.smoothies = []
         this.sorted.forEach((item, i) => {
             this.smoothies.push(this.smoothieNameMap[item])
