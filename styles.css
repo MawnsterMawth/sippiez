@@ -6,17 +6,52 @@ ul {
     background-color: #996515;
 }
 
-li {
+lin {
     float: left;
+
 }
 
-li a {
+lin a {
     display: block;
     color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
+
+.center {
+    text-align: center;
+}
+
+.article {
+    border: 1px solid black;
+    margin: 25px 100px 75px 100px;
+    background-color: #daffd4;
+}
+
+/*Basic padding, will replace for universal margining*/
+.text_padding {
+    padding-left: 20px;
+}
+
+.blog-post {
+    margin-bottom: 4rem;
+}
+.blog-post-title {
+    font-size: 2.5rem;
+}
+.blog-post-meta {
+    margin-bottom: 1.25rem;
+    color: #727272;
+}
+
+.logoCenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
 
 li a:hover {
     background-color: #111;
