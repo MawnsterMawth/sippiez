@@ -6,12 +6,12 @@ ul {
     background-color: #996515;
 }
 
-li {
+lin {
     float: left;
 
 }
 
-li a {
+lin a {
     display: block;
     color: white;
     text-align: center;
@@ -21,6 +21,17 @@ li a {
 
 .center {
     text-align: center;
+}
+
+.article {
+    border: 1px solid black;
+    margin: 25px 100px 75px 100px;
+    background-color: #daffd4;
+}
+
+/*Basic padding, will replace for universal margining*/
+.text_padding {
+    padding-left: 20px;
 }
 
 .blog-post {
