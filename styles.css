@@ -1,9 +1,12 @@
+
+/* Nav bar */
 ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #996515;
+    background-color: #b94a48;
+    /*#996515*/
 }
 
 lin {
@@ -23,10 +26,12 @@ lin a {
     text-align: center;
 }
 
+/* Home Page Article Box */
 .article {
     border: 1px solid black;
     margin: 25px 100px 75px 100px;
-    background-color: #daffd4;
+    background-color: #ffdddb;
+    /*#daffd4*/
 }
 
 /*Basic padding, will replace for universal margining*/
@@ -40,9 +45,12 @@ lin a {
 .blog-post-title {
     font-size: 2.5rem;
 }
+
+/* ?? */
 .blog-post-meta {
     margin-bottom: 1.25rem;
-    color: #727272;
+    color: #fc9d9a;
+    /*#727272*/
 }
 
 .logoCenter {
@@ -52,7 +60,8 @@ lin a {
 }
 
 
-
+/* ?? */
 li a:hover {
     background-color: #111;
+    /*#111*/
 }
