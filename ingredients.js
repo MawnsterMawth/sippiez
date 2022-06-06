@@ -95,7 +95,7 @@ function ingredientList() {
 
         let price_description = document.createElement('div')
         price_description.setAttribute('class', 'row')
-        price_description.innerHTML = "Calories per ounce: " + this.ingredients[i].price_per_unit
+        price_description.innerHTML = "Price per ounce: " + this.ingredients[i].price_per_unit
         container.appendChild(price_description)
 
         let count_description = document.createElement('div')
