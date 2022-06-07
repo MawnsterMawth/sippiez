@@ -54,7 +54,7 @@ function ingredientList() {
         let accordion = document.getElementById(this.ingredients[i].i_name + 'accordion')
 
         let item = document.createElement('div')
-        item.setAttribute('class', 'accordion-item')
+        item.setAttribute('class', 'accordion-item ')
         item.setAttribute('id', 'accordion-item' + i)
         accordion.appendChild(item)
 
@@ -64,7 +64,7 @@ function ingredientList() {
         item.appendChild(h2)
 
         let button = document.createElement('button')
-        button.setAttribute('class', 'accordion-button')
+        button.setAttribute('class', 'accordion-button bg-danger bg-opacity-75 text-black')
         button.setAttribute('type', 'button')
         button.setAttribute('data-bs-toggle', 'collapse')
         button.setAttribute('data-bs-target','#collapse' + i)
