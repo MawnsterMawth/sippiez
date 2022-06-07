@@ -123,7 +123,7 @@ function smoothieList() {
         div.appendChild(h2)
         // adds button to header
         let button = document.createElement('button')
-        button.setAttribute('class', 'accordion-button')
+        button.setAttribute('class', 'accordion-button bg-danger bg-opacity-75 text-black')
         button.setAttribute('type', 'button')
         button.setAttribute('data-bs-toggle', 'collapse')
         button.setAttribute('data-bs-target','#collapse' + i)

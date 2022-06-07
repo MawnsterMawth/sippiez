@@ -65,3 +65,14 @@ li a:hover {
     background-color: #111;
     /*#111*/
 }
+
+
+/* Action Recipe tab color */
+.panel-default > .panel-heading {
+    background-color:#b94a48;
+}
+
+.bg-danger {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-success-rgb), var(--bs-bg-opacity)) !important;
+}
