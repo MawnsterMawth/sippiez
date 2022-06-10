@@ -172,7 +172,7 @@ function smoothieListFind() {
         div.appendChild(h2)
         // create accordion button and append to accordion header
         let button = document.createElement('button')
-        button.setAttribute('class', 'accordion-button')
+        button.setAttribute('class', 'accordion-button bg-danger bg-opacity-75 text-black')
         button.setAttribute('type', 'button')
         button.setAttribute('data-bs-toggle', 'collapse')
         button.setAttribute('data-bs-target','#collapse' + i)
